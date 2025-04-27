@@ -23,7 +23,7 @@ public class GamePanel extends JPanel implements KeyListener {
         candy = new Candy();
         gameOver = false;
         candy.createCandy(snake.LookBody());
-        calculateTime = 250;
+        calculateTime = 200;
     }
     //初始化蛇长snakeSize
     public GamePanel(int snakeSize){
@@ -31,7 +31,7 @@ public class GamePanel extends JPanel implements KeyListener {
         candy = new Candy();
         gameOver = false;
         candy.createCandy(snake.LookBody());
-        calculateTime = 250;
+        calculateTime = 200;
     }
     @Override
     public void paint(Graphics g) {
@@ -43,15 +43,18 @@ public class GamePanel extends JPanel implements KeyListener {
     }
     //画蛇活动的背景
     public void drawBackground(Graphics g){
-        //背景墙颜色
-        g.setColor(new Color(24, 62, 216, 121));
-        //背景墙绘制
-        g.fillRect(0,0,800,600);
-        //网格线颜色
-        g.setColor(Color.white);
+        //背景网格墙
+        int c;
         for(int i = 0;i < 40;i++){
+            c = i % 2;
             for(int j = 0;j < 30;j++){
-                g.drawRect(i * 20,j * 20,20,20);
+                if(c == 0){
+                    g.setColor(new Color(252, 178, 79));
+                }else{
+                    g.setColor(new Color(251, 193, 78));
+                }
+                c = (c + 1) % 2;
+                g.fillRect(i * 20,j * 20,20,20);
             }
         }
     }
@@ -61,10 +64,10 @@ public class GamePanel extends JPanel implements KeyListener {
         for(int i = 0;i < x.size();i++){
             if(i == 0){
                 //蛇头红色
-                g.setColor(Color.red);
+                g.setColor(new Color(124, 252, 0));
             }else{
                 //蛇身绿色
-                g.setColor(Color.green);
+                g.setColor(new Color(50, 205, 50));
             }
             g.fillRect(x.get(i)[0] - 10,x.get(i)[1] - 10,20,20);
             g.setColor(Color.black);
@@ -81,7 +84,7 @@ public class GamePanel extends JPanel implements KeyListener {
 
     public void drawScore(Graphics g){
         //说明信息的背景色
-        g.setColor(Color.cyan);
+        g.setColor(new Color(240, 240, 240));
         g.fillRect(801,0,225,600);
         //字
         g.setColor(Color.black);
@@ -177,7 +180,7 @@ public class GamePanel extends JPanel implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_SPACE){
-            calculateTime = 250;
+            calculateTime = 200;
         }
     }
 }
