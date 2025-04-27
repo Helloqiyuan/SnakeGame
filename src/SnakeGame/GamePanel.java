@@ -86,7 +86,7 @@ public class GamePanel extends JPanel implements KeyListener {
         //说明信息的背景色
         g.setColor(new Color(240, 240, 240));
         g.fillRect(801,0,225,600);
-        //字
+        //渲染字体
         g.setColor(Color.black);
         g.setFont(new Font("楷体",Font.BOLD,35));
         g.drawString("贪吃蛇游戏",810,50);
