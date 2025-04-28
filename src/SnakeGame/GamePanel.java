@@ -8,38 +8,41 @@ import java.util.List;
 
 public class GamePanel extends JPanel implements KeyListener {
     //蛇
-    private Snake snake = null;
+    private Snake snake;
     //糖果
-    private Candy candy = null;
+    private Candy candy;
     //游戏状态标志量
     private boolean gameOver;
     //游戏结束原因
     private String gameOverCondition;
-    //游戏计算时间间隔
-    private int calculateTime;
+    //游戏计算时间刻
+    private int tickTime;
+    //游戏时间
+    private int hour,minute,second;
+    //游戏时间字符串
+    private String timeString;
 
     public GamePanel(){
-        snake = new Snake();
+        snake = new Snake(10);
         candy = new Candy();
         gameOver = false;
         candy.createCandy(snake.LookBody());
-        calculateTime = 200;
-    }
-    //初始化蛇长snakeSize
-    public GamePanel(int snakeSize){
-        snake = new Snake(snakeSize);
-        candy = new Candy();
-        gameOver = false;
-        candy.createCandy(snake.LookBody());
-        calculateTime = 200;
+        tickTime = 200;
+        hour = 0;
+        minute = 0;
+        second = 0;
+        timeString = "00:00:00";
     }
     @Override
     public void paint(Graphics g) {
+        long startTime = System.currentTimeMillis();
         super.paint(g);
         drawBackground(g);
         drawSnake(g);
         drawCandy(g);
         drawScore(g);
+        long endTime = System.currentTimeMillis();
+        System.out.println("paint time:" + (endTime - startTime));
     }
     //画蛇活动的背景
     public void drawBackground(Graphics g){
@@ -61,7 +64,7 @@ public class GamePanel extends JPanel implements KeyListener {
     //画蛇
     public void drawSnake(Graphics g){
         List<int[]> x = snake.LookBody();
-        for(int i = 0;i < x.size();i++){
+        for(int i = x.size() - 1;i >= 0;i--){
             if(i == 0){
                 //蛇头红色
                 g.setColor(new Color(124, 252, 0));
@@ -90,15 +93,16 @@ public class GamePanel extends JPanel implements KeyListener {
         g.setColor(Color.black);
         g.setFont(new Font("楷体",Font.BOLD,35));
         g.drawString("贪吃蛇游戏",810,50);
-        g.drawString("得分:",810,100);
-        g.drawString((snake.LookBody().size() - 2) * 5 + "",900,100);
+        g.drawString(timeString,830,90);
+        g.drawString("得分:",810,130);
+        g.drawString((snake.LookBody().size() - snake.getOriginSize()) * 5 + "",915,130);
         if(gameOver){
             g.setColor(Color.red);
             g.setFont(new Font("楷体",Font.BOLD,30));
-            g.drawString("游戏结束！",810,150);
+            g.drawString("游戏结束！",810,170);
             g.setFont(new Font("楷体",Font.BOLD,25));
-            g.drawString("结束原因:",810,190);
-            g.drawString(gameOverCondition,810,230);
+            g.drawString("结束原因:",810,210);
+            g.drawString(gameOverCondition,810,250);
         }
 //        g.setColor(Color.black);
 //        g.setFont(new Font("楷体",Font.BOLD,25));
@@ -107,6 +111,28 @@ public class GamePanel extends JPanel implements KeyListener {
 //        g.drawString("吃满20颗则赢,",810,340);
 //        g.drawString("撞墙或者撞上",810,370);
 //        g.drawString("自己则失败。",810,400);
+    }
+    public void timeThread(){
+        while(!gameOver){
+            try{
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            if(second == 59){
+                if(minute == 59){
+                    second = 0;
+                    minute = 0;
+                    hour ++;
+                }else{
+                    second = 0;
+                    minute ++;
+                }
+            }else{
+                second ++;
+            }
+            timeString = String.format("%02d:%02d:%02d",hour,minute,second);
+        }
     }
     public void gameThread(){
         while(!gameOver){
@@ -141,7 +167,7 @@ public class GamePanel extends JPanel implements KeyListener {
                 repaint();
             }
             try{
-                Thread.sleep(calculateTime);
+                Thread.sleep(tickTime);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -173,14 +199,14 @@ public class GamePanel extends JPanel implements KeyListener {
         } else if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_LEFT) {
             snake.setDirection(3);
         } else if(e.getKeyCode() == KeyEvent.VK_SPACE){
-            calculateTime = 50;
+            tickTime = 50;
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_SPACE){
-            calculateTime = 200;
+            tickTime = 200;
         }
     }
 }

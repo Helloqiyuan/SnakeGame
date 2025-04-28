@@ -10,6 +10,8 @@ public class Snake {
     private int y;
     //蛇将要去的方向 0 1 2 3上右下左
     private int direction;
+    //初始长度
+    private int originSize;
     //一步走多少像素
     private int step = 20;
     //蛇身体的坐标
@@ -23,19 +25,12 @@ public class Snake {
     public Snake(int snakeSize){
         this.x = 410;
         this.y = 310;
+        this.originSize = snakeSize;
         this.direction = 1;
         body = new ArrayList<>();
         body.add(new int[]{x,y});
         for(int i = 0;i < snakeSize - 1;i++){
             addTail();
-        }
-    }
-    public void operation(int x){
-        synchronized (this) {
-            switch (x){
-                case 0 -> snakeIdle();
-                case 1 -> addTail();
-            }
         }
     }
     public void snakeIdle(){
@@ -69,6 +64,10 @@ public class Snake {
 
     public int getY() {
         return y;
+    }
+
+    public int getOriginSize() {
+        return originSize;
     }
 
     public List<int[]> LookBody() {
