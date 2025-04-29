@@ -42,7 +42,7 @@ public class GamePanel extends JPanel implements KeyListener {
         drawCandy(g);
         drawScore(g);
         long endTime = System.currentTimeMillis();
-        System.out.println("paint time:" + (endTime - startTime));
+        //System.out.println("paint time:" + (endTime - startTime));
     }
     //画蛇活动的背景
     public void drawBackground(Graphics g){
@@ -104,13 +104,15 @@ public class GamePanel extends JPanel implements KeyListener {
             g.drawString("结束原因:",810,210);
             g.drawString(gameOverCondition,810,250);
         }
-//        g.setColor(Color.black);
-//        g.setFont(new Font("楷体",Font.BOLD,25));
-//        g.drawString("说明:",810,280);
-//        g.drawString("吃一颗糖得5分,",810,310);
-//        g.drawString("吃满20颗则赢,",810,340);
-//        g.drawString("撞墙或者撞上",810,370);
-//        g.drawString("自己则失败。",810,400);
+        g.setColor(Color.black);
+        g.setFont(new Font("楷体",Font.BOLD,25));
+        g.drawString("说明:",810,280);
+        g.drawString("W/方向键上:上",810,310);
+        g.drawString("A/方向键左:左",810,340);
+        g.drawString("S/方向键下:下",810,370);
+        g.drawString("D/方向键右:右",810,400);
+        //g.drawString("撞墙或者撞上",810,370);
+        //g.drawString("自己则失败。",810,400);
     }
     public void timeThread(){
         while(!gameOver){
