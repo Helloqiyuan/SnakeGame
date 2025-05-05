@@ -35,14 +35,11 @@ public class GamePanel extends JPanel implements KeyListener {
     }
     @Override
     public void paint(Graphics g) {
-        long startTime = System.currentTimeMillis();
         super.paint(g);
         drawBackground(g);
         drawSnake(g);
         drawCandy(g);
         drawScore(g);
-        long endTime = System.currentTimeMillis();
-        //System.out.println("paint time:" + (endTime - startTime));
     }
     //画蛇活动的背景
     public void drawBackground(Graphics g){
@@ -141,27 +138,87 @@ public class GamePanel extends JPanel implements KeyListener {
             //闲逛
             snake.snakeIdle();
             //吃糖
+//            if(snake.getX() == candy.getX() && snake.getY() == candy.getY()) {
+//                //System.out.println("meet");
+//                snake.addTail();
+//                candy.eatCandy();
+//                candy.createCandy(snake.LookBody());
+//            }
+            //结束条件1:蛇长达上限(默认铺满全屏算赢)
+//            if(snake.LookBody().size() == 2 + 40 * 30){
+//                gameOverCondition = "胜利！";
+//                //游戏结束
+//                gameOver = true;
+//                repaint();
+//            }
+            //结束条件2:撞墙
+//            if(snake.getX() < 0 || snake.getX() > 800 || snake.getY() < 0 || snake.getY() > 600){
+//                gameOverCondition = "撞墙了！";
+//                //游戏结束
+//                gameOver = true;
+//                repaint();
+//            }
+            //结束条件3:撞上自己了
+//            if(snake.headFrontIsBody()){
+//                gameOverCondition = "撞上自己了！";
+//                //游戏结束
+//                gameOver = true;
+//                repaint();
+//            }
+            try{
+                Thread.sleep(tickTime);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    public void eatThread(){
+        while (!gameOver){
             if(snake.getX() == candy.getX() && snake.getY() == candy.getY()) {
                 //System.out.println("meet");
                 snake.addTail();
                 candy.eatCandy();
                 candy.createCandy(snake.LookBody());
             }
-            //结束条件1:蛇长达上限(默认铺满全屏算赢)
+            try{
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    public void victoryThread(){
+        while (!gameOver){
             if(snake.LookBody().size() == 2 + 40 * 30){
                 gameOverCondition = "胜利！";
                 //游戏结束
                 gameOver = true;
                 repaint();
             }
-            //结束条件2:撞墙
+            try{
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    public void crashWallThread(){
+        while (!gameOver){
             if(snake.getX() < 0 || snake.getX() > 800 || snake.getY() < 0 || snake.getY() > 600){
                 gameOverCondition = "撞墙了！";
                 //游戏结束
                 gameOver = true;
                 repaint();
             }
-            //结束条件3:撞上自己了
+            try{
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    public void crashSelfThread(){
+        while (!gameOver){
             if(snake.headFrontIsBody()){
                 gameOverCondition = "撞上自己了！";
                 //游戏结束
@@ -169,7 +226,7 @@ public class GamePanel extends JPanel implements KeyListener {
                 repaint();
             }
             try{
-                Thread.sleep(tickTime);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
