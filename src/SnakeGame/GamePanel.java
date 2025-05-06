@@ -23,7 +23,7 @@ public class GamePanel extends JPanel implements KeyListener {
     private String timeString;
 
     public GamePanel(){
-        snake = new Snake(10);
+        snake = new Snake(12);
         candy = new Candy();
         gameOver = false;
         candy.createCandy(snake.LookBody());
@@ -137,34 +137,6 @@ public class GamePanel extends JPanel implements KeyListener {
         while(!gameOver){
             //闲逛
             snake.snakeIdle();
-            //吃糖
-//            if(snake.getX() == candy.getX() && snake.getY() == candy.getY()) {
-//                //System.out.println("meet");
-//                snake.addTail();
-//                candy.eatCandy();
-//                candy.createCandy(snake.LookBody());
-//            }
-            //结束条件1:蛇长达上限(默认铺满全屏算赢)
-//            if(snake.LookBody().size() == 2 + 40 * 30){
-//                gameOverCondition = "胜利！";
-//                //游戏结束
-//                gameOver = true;
-//                repaint();
-//            }
-            //结束条件2:撞墙
-//            if(snake.getX() < 0 || snake.getX() > 800 || snake.getY() < 0 || snake.getY() > 600){
-//                gameOverCondition = "撞墙了！";
-//                //游戏结束
-//                gameOver = true;
-//                repaint();
-//            }
-            //结束条件3:撞上自己了
-//            if(snake.headFrontIsBody()){
-//                gameOverCondition = "撞上自己了！";
-//                //游戏结束
-//                gameOver = true;
-//                repaint();
-//            }
             try{
                 Thread.sleep(tickTime);
             } catch (InterruptedException e) {
@@ -175,7 +147,6 @@ public class GamePanel extends JPanel implements KeyListener {
     public void eatThread(){
         while (!gameOver){
             if(snake.getX() == candy.getX() && snake.getY() == candy.getY()) {
-                //System.out.println("meet");
                 snake.addTail();
                 candy.eatCandy();
                 candy.createCandy(snake.LookBody());

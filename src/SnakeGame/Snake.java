@@ -93,16 +93,12 @@ public class Snake {
             int[] last = body.getLast();
             if (body.get(body.size() - 2)[1] < last[1]) {
                 body.add(new int[]{last[0], last[1] + 20});
-                //System.out.println("0");
             } else if (body.get(body.size() - 2)[0] > last[0]) {
                 body.add(new int[]{last[0] - 20, last[1]});
-                //System.out.println("1");
             } else if (body.get(body.size() - 2)[1] > last[1]) {
                 body.add(new int[]{last[0], last[1] - 20});
-                //System.out.println("2");
             } else if (body.get(body.size() - 2)[0] < last[0]) {
                 body.add(new int[]{last[0] + 20, last[1]});
-                //System.out.println("3");
             }
         }
     }
